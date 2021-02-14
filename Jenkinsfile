@@ -19,14 +19,14 @@ pipeline {
                 rtMavenResolver (
                     id: 'maven-resolver',
                     serverId: 'talyi-artifactory',
-                    releaseRepo: 'libs-release',
+                    releaseRepo: 'libs-staging',
                     snapshotRepo: 'libs-snapshot'
                 )  
                  
                 rtMavenDeployer (
                     id: 'maven-deployer',
                     serverId: 'talyi-artifactory',
-                    releaseRepo: 'libs-release-local',
+                    releaseRepo: 'libs-staging-local',
                     snapshotRepo: 'libs-snapshot-local',
                     threads: 6,
                     properties: ['BinaryPurpose=Technical-BlogPost', 'Team=DevOps-Acceleration']
@@ -42,6 +42,38 @@ pipeline {
                     goals: '-U clean install',
                     deployerId: "maven-deployer",
                     resolverId: "maven-resolver"
+                )
+            }
+        }
+
+        stage ('Publish build info') {
+            steps {
+                rtPublishBuildInfo (
+                    serverId: "talyi-artifactory"
+                )
+            }
+        }
+
+        stage ('Xray scan') {
+            steps {
+                xrayScan (
+                    serverId: "talyi-artifactory",
+                    failBuild: false
+                )
+            }
+        } 
+
+        stage ('Promotion') {
+            steps {
+                rtPromote (
+                    serverId: "talyi-artifactory",
+                    targetRepo: 'libs-release-local',
+                    comment: 'Passed Xray QualityGate',
+                    sourceRepo: 'libs-staging-local',
+                    status: 'Released',
+                    includeDependencies: true,
+                    failFast: true,
+                    copy: false
                 )
             }
         }
@@ -73,35 +105,14 @@ pipeline {
             }
         }
 
-        stage('Install Helm') {
+        stage ('Xray scan') {
             steps {
-                  sh """
-                    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-                    chmod 700 get_helm.sh && helm version
-                  """
+                xrayScan (
+                    serverId: "talyi-artifactory",
+                    failBuild: false
+                )
             }
-        }
-
-        stage('Configure Helm & Artifactory') {
-            steps {
-                 withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'admin.jfrog', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
-                   sh """
-                    helm repo add helm https://talyi.jfrog.io/artifactory/helm --username ${env.USERNAME} --password ${env.PASSWORD}
-                    helm repo update
-                   """
-                 }
-            }
-        }
-
-        stage('Deploy Chart') {
-            steps {
-                withCredentials([kubeconfigContent(credentialsId: 'k8s-cluster-kubeconfig', variable: 'KUBECONFIG_CONTENT')]) {
-                    sh """
-                     echo "$KUBECONFIG_CONTENT" > config && cp config ~/.kube/config
-                     helm upgrade --install spring-petclinic-ci-cd-k8s-example helm/spring-petclinic-ci-cd-k8s-chart --kube-context=gke_soleng-dev_us-west1-a_artifactory-ha-cluster --set=image.tag=1.0.${env.BUILD_NUMBER}
-                    """
-                }
-            }
-        }
+        }         
+        
     }
 }
