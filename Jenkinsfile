@@ -10,12 +10,6 @@ pipeline {
 
         stage ('Artifactory Configuration') {
             steps {
-                rtServer (
-                    id: "talyi-artifactory",
-                    url: "https://talyi.jfrog.io/artifactory",
-                    credentialsId: "admin.jfrog"
-                )
-
                 rtMavenResolver (
                     id: 'maven-resolver',
                     serverId: 'talyi-artifactory',
@@ -58,7 +52,7 @@ pipeline {
             steps {
                 xrayScan (
                     serverId: "talyi-artifactory",
-                    failBuild: false
+                    failBuild: true
                 )
             }
         } 
@@ -109,7 +103,7 @@ pipeline {
             steps {
                 xrayScan (
                     serverId: "talyi-artifactory",
-                    failBuild: false
+                    failBuild: true
                 )
             }
         }         
