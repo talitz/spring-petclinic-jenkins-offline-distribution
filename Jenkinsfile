@@ -54,7 +54,7 @@ pipeline {
             }
         }
 
-        stage ('Xray scan') {
+        stage ('Xray Maven Scan') {
             steps {
                 xrayScan (
                     serverId: "talyi-artifactory",
@@ -105,7 +105,7 @@ pipeline {
             }
         }
 
-        stage ('Xray scan') {
+        stage ('Xray Docker Image Scan') {
             steps {
                 xrayScan (
                     serverId: "talyi-artifactory",
