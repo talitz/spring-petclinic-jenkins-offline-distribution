@@ -13,15 +13,15 @@ pipeline {
                 rtMavenResolver (
                     id: 'maven-resolver',
                     serverId: 'talyi-artifactory',
-                    releaseRepo: 'libs-prod',
+                    releaseRepo: 'libs-release',
                     snapshotRepo: 'libs-release'
                 )  
                  
                 rtMavenDeployer (
                     id: 'maven-deployer',
                     serverId: 'talyi-artifactory',
-                    releaseRepo: 'libs-prod-local',
-                    snapshotRepo: 'libs-release-local',
+                    releaseRepo: 'libs-release-local',
+                    snapshotRepo: 'libs-snapshot-local',
                     threads: 6,
                     properties: ['BinaryPurpose=Technical-BlogPost', 'Team=DevOps-Acceleration']
                 )
@@ -61,10 +61,10 @@ pipeline {
             steps {
                 rtPromote (
                     serverId: "talyi-artifactory",
-                    targetRepo: 'libs-prod-local',
+                    targetRepo: 'libs-release-local',
                     comment: 'Passed Xray QualityGate',
-                    sourceRepo: 'libs-release-local',
-                    status: 'Ready to Production',
+                    sourceRepo: 'libs-snapshot-local',
+                    status: 'Released',
                     includeDependencies: true,
                     failFast: true,
                     copy: false
