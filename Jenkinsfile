@@ -101,13 +101,22 @@ pipeline {
             }
         }         
         
-        stage ('Install JFrog CLI') {
+        stage ('Install & Setup JFrog CLI') {
             steps {
                  sh '''
-                    curl -fL https://getcli.jfrog.io | sh
+                    curl -fL https://getcli.jfrog.io
+                    jfrog -version
                  '''
             }
         }         
+
+        stage ('Configure JFrog CLI') {
+            steps {
+                 sh '''
+                    jfrog rt config --url=$ARTIFACTORY_URL --user=$ARTIFACTORY_USER --password=$ARTIFACTORY_PASS
+                 '''
+            }
+        }  
 
         stage ('Create & Sign Release Bundle') {
             steps {
