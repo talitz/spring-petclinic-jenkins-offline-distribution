@@ -58,7 +58,7 @@ pipeline {
                     targetRepo: 'libs-release-local',
                     comment: 'Passed Xray QualityGate',
                     status: 'Released',
-                    includeDependencies: true,
+                    includeDependencies: false,
                     failFast: true,
                     copy: true
                 )
