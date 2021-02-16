@@ -57,11 +57,10 @@ pipeline {
                     serverId: "talyi-artifactory",
                     targetRepo: 'libs-release-local',
                     comment: 'Passed Xray QualityGate',
-                    sourceRepo: 'libs-snapshot-local',
                     status: 'Released',
                     includeDependencies: true,
                     failFast: true,
-                    copy: false
+                    copy: true
                 )
             }
         }
