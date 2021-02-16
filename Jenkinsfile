@@ -108,5 +108,28 @@ pipeline {
             }
         }         
         
+        stage ('Install JFrog CLI') {
+            steps {
+                 bash '''
+                    curl -fL https://getcli.jfrog.io | sh
+                 '''
+            }
+        }         
+
+        stage ('Create & Sign Release Bundle') {
+            steps {
+                 bash '''
+                    jfrog rt rbc --spec=RB-spec.json --sign EU-LISA-RB 1.0.${env.BUILD_NUMBER}
+                 '''
+            }
+        }
+
+        stage ('Export Release Bundle') {
+            steps {
+                 bash '''
+                    curl -XPOST 'http://localhost:8082/distribution/api/v1/export/release_bundle/EU-LISA-RB/1.0.${env.BUILD_NUMBER}' -uadmin:password
+                 '''
+            }
+        }
     }
 }
