@@ -103,7 +103,7 @@ pipeline {
         
         stage ('Install JFrog CLI') {
             steps {
-                 bash '''
+                 sh '''
                     curl -fL https://getcli.jfrog.io | sh
                  '''
             }
@@ -111,7 +111,7 @@ pipeline {
 
         stage ('Create & Sign Release Bundle') {
             steps {
-                 bash '''
+                 sh '''
                     jfrog rt rbc --spec=RB-spec.json --sign EU-LISA-RB 1.0.${env.BUILD_NUMBER}
                  '''
             }
@@ -119,7 +119,7 @@ pipeline {
 
         stage ('Export Release Bundle') {
             steps {
-                 bash '''
+                 sh '''
                     curl -XPOST 'https://talyi.jfrog.io/distribution/api/v1/export/release_bundle/EU-LISA-RB/1.0.${env.BUILD_NUMBER}' -uadmin:password
                  '''
             }
