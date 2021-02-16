@@ -14,7 +14,7 @@ pipeline {
                     id: 'maven-resolver',
                     serverId: 'talyi-artifactory',
                     releaseRepo: 'libs-release',
-                    snapshotRepo: 'libs-release'
+                    snapshotRepo: 'libs-snapshot'
                 )  
                  
                 rtMavenDeployer (
