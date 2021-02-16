@@ -2,12 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage ('Clone') {
-            steps {
-                git branch: 'master', url: "https://github.com/talitz/spring-petclinic-jenkins-offline-distribution.git" 
-            }
-        }
-
         stage ('Artifactory Configuration') {
             steps {
                 rtMavenResolver (
