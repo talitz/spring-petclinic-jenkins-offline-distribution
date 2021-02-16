@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage ('Clone') {
             steps {
-                git branch: 'master', url: "https://github.com/talitz/spring-petclinic-ci-cd-k8s-example.git"
+                git branch: 'master', url: "https://github.com/talitz/spring-petclinic-jenkins-offline-distribution.git" 
             }
         }
 
@@ -127,7 +127,7 @@ pipeline {
         stage ('Export Release Bundle') {
             steps {
                  bash '''
-                    curl -XPOST 'http://localhost:8082/distribution/api/v1/export/release_bundle/EU-LISA-RB/1.0.${env.BUILD_NUMBER}' -uadmin:password
+                    curl -XPOST 'https://talyi.jfrog.io/distribution/api/v1/export/release_bundle/EU-LISA-RB/1.0.${env.BUILD_NUMBER}' -uadmin:password
                  '''
             }
         }
