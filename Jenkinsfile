@@ -104,8 +104,8 @@ pipeline {
         stage ('Install & Setup JFrog CLI') {
             steps {
                  sh '''
-                    curl -fL https://getcli.jfrog.io
-                    jfrog -version
+                    pwd
+                    ./jfrog -version
                  '''
             }
         }         
