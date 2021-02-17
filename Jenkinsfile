@@ -115,7 +115,7 @@ pipeline {
         stage ('Create & Sign Release Bundle') {
             steps {
                  sh '''
-                    ./jfrog rt rbc --spec=RB-spec.json --sign EU-LISA-RB 1.0.0
+                    ./jfrog rt rbc --spec=RB-spec.json --sign --dist-url=https://talyi.jfrog.io/distribution EU-LISA-RB 1.0.0
                  '''
             }
         }
