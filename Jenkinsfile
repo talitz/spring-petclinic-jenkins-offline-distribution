@@ -105,7 +105,7 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'dist-access-token', variable: 'ACCESS_TOKEN')]) {
                      sh '''
-                        ./jfrog rt config --url=https://talyi.jfrog.io/artifactory --interactive=false --access-token=${ACCESS_TOKEN}
+                        ./jfrog rt config --url=https://talyi.jfrog.io/artifactory --dist-url=https://talyi.jfrog.io/distribution --interactive=false --access-token=${ACCESS_TOKEN}
                         ./jfrog rt ping
                      '''
                  }
@@ -115,7 +115,7 @@ pipeline {
         stage ('Create & Sign Release Bundle') {
             steps {
                  sh '''
-                    ./jfrog rt rbc --spec=RB-spec.json --sign --dist-url=https://talyi.jfrog.io/distribution EU-LISA-RB 1.0.0
+                    ./jfrog rt rbc --spec=RB-spec.json --sign EU-LISA-RB 1.0.0
                  '''
             }
         }
