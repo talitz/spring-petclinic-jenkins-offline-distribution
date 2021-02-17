@@ -119,7 +119,7 @@ pipeline {
                  '''
             }
         }
-
+        /*
         stage ('Export Release Bundle') {
             steps {
                 withCredentials([[$class:'UsernamePasswordMultiBinding', credentialsId: 'admin.jfrog', usernameVariable:'ARTIFACTORY_USER', passwordVariable:'ARTIFACTORY_PASS']]) {
@@ -129,5 +129,6 @@ pipeline {
                  }
             }
         }
+        */
     }
 }
