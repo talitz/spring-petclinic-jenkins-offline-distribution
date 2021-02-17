@@ -106,6 +106,7 @@ pipeline {
                 withCredentials([[$class:'UsernamePasswordMultiBinding', credentialsId: 'admin.jfrog', usernameVariable:'ARTIFACTORY_USER', passwordVariable:'ARTIFACTORY_PASS']]) {
                      sh '''
                         ./jfrog rt config --url=https://talyi.jfrog.io/artifactory --user=${ARTIFACTORY_USER} --password=${ARTIFACTORY_PASS}
+                        ./jfrog rt ping
                      '''
                  }
             }
@@ -114,6 +115,7 @@ pipeline {
         stage ('Create & Sign Release Bundle') {
             steps {
                  sh '''
+                    ./jfrog -version
                     ./jfrog rt rbc --spec=RB-spec.json --sign EU-LISA-RB 1.0.${env.BUILD_NUMBER}
                  '''
             }
