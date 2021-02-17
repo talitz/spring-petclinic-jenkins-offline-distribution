@@ -1,7 +1,7 @@
 {
   "files": [
     {
-      "pattern": "/myAppRepo/"
+      "pattern": "spring-petclinic-ci-cd*"
     }
   ]
 }
