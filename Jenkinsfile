@@ -124,7 +124,7 @@ pipeline {
             steps {
                 withCredentials([[$class:'UsernamePasswordMultiBinding', credentialsId: 'admin.jfrog', usernameVariable:'ARTIFACTORY_USER', passwordVariable:'ARTIFACTORY_PASS']]) {
                      sh '''
-                        curl -XPOST 'https://talyi.jfrog.io/distribution/api/v1/export/release_bundle/EU-LISA-RB/1.0.${env.BUILD_NUMBER}' -u${ARTIFACTORY_USER}:${ARTIFACTORY_PASS}
+                        curl -XPOST 'https://talyi.jfrog.io/distribution/api/v1/export/release_bundle/EU-LISA-RB/1.0.0' -u${ARTIFACTORY_USER}:${ARTIFACTORY_PASS}
                      '''
                  }
             }
