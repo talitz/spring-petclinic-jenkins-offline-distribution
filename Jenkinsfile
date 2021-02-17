@@ -105,7 +105,7 @@ pipeline {
             steps {
                 withCredentials([[$class:'UsernamePasswordMultiBinding', credentialsId: 'admin.jfrog', usernameVariable:'ARTIFACTORY_USER', passwordVariable:'ARTIFACTORY_PASS']]) {
                      sh '''
-                        ./jfrog rt config --url=https://talyi.jfrog.io/artifactory --dist-url=https://talyi.jfrog.io/distribution --interactive=false --username=${ARTIFACTORY_USER} --password=${ARTIFACTORY_PASS}
+                        ./jfrog rt config --url=https://talyi.jfrog.io/artifactory --dist-url=https://talyi.jfrog.io/distribution --interactive=false --user=${ARTIFACTORY_USER} --password=${ARTIFACTORY_PASS}
                         ./jfrog rt ping
                      '''
                  }
