@@ -115,7 +115,7 @@ pipeline {
         stage ('Create & Sign Release Bundle') {
             steps {
                  sh '''
-                    ./jfrog rt rbc --spec=RB-spec.json --sign EU-LISA-RB 1.0."${env.BUILD_NUMBER}"
+                    ./jfrog rt rbc --spec=RB-spec.json --sign EU-LISA-RB 1.0.0
                  '''
             }
         }
