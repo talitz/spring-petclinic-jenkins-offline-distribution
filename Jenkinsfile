@@ -115,7 +115,7 @@ pipeline {
         stage ('Create & Sign Release Bundle') {
             steps {
                  sh '''
-                    ./jfrog rt rbc --sign EU-LISA-RB 1.0.0 "spring-petclinic-ci-cd-k8s-chart-0.1.2.tgz"
+                    ./jfrog rt rbc --sign EU-LISA-RB 1.0.0 "*.tgz"
                  '''
             }
         }
