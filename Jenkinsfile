@@ -101,20 +101,13 @@ pipeline {
             }
         }         
         
-        stage ('Install & Setup JFrog CLI') {
+        stage ('Setup JFrog CLI') {
             steps {
-                 sh '''
-                    pwd
-                    ./jfrog -version
-                 '''
-            }
-        }         
-
-        stage ('Configure JFrog CLI') {
-            steps {
-                 sh '''
-                    jfrog rt config --url=$ARTIFACTORY_URL --user=$ARTIFACTORY_USER --password=$ARTIFACTORY_PASS
-                 '''
+                withCredentials([[$class:'UsernamePasswordMultiBinding', credentialsId: 'admin.jfrog', usernameVariable:'ARTIFACTORY_USER', passwordVariable:'ARTIFACTORY_PASS']]) {
+                     sh '''
+                        ./jfrog rt config --url=https://talyi.jfrog.io/artifactory --user=${ARTIFACTORY_USER} --password=${ARTIFACTORY_PASS}
+                     '''
+                 }
             }
         }  
 
@@ -128,9 +121,11 @@ pipeline {
 
         stage ('Export Release Bundle') {
             steps {
-                 sh '''
-                    curl -XPOST 'https://talyi.jfrog.io/distribution/api/v1/export/release_bundle/EU-LISA-RB/1.0.${env.BUILD_NUMBER}' -uadmin:password
-                 '''
+                withCredentials([[$class:'UsernamePasswordMultiBinding', credentialsId: 'admin.jfrog', usernameVariable:'ARTIFACTORY_USER', passwordVariable:'ARTIFACTORY_PASS']]) {
+                     sh '''
+                        curl -XPOST 'https://talyi.jfrog.io/distribution/api/v1/export/release_bundle/EU-LISA-RB/1.0.${env.BUILD_NUMBER}' -u${ARTIFACTORY_USER}:${ARTIFACTORY_PASS}
+                     '''
+                 }
             }
         }
     }
