@@ -119,6 +119,8 @@ pipeline {
                  '''
             }
         }
+
+        //Optional stage - trigger the export process, so all that's left is downloading the Release Bundle
         /*
         stage ('Export Release Bundle') {
             steps {
