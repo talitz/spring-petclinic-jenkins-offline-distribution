@@ -1,4 +1,5 @@
-## Jenkins Pipeline for Spring-PetClinic Project - Demonstrating Offline Air-gapped Distribution 
+## Jenkins Pipeline for Spring-PetClinic Project
+### Demonstrating Offline Air-gapped Distribution 
 
 For more details about air-gapped distribution, please read: https://jfrog.com/blog/air-gap-distribution-delivers/
 
